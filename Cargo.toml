@@ -1,0 +1,19 @@
+[package]
+name = "storedb"
+version = "1.0.0"
+authors = ["Anand Aiyer"]
+edition = "2021"
+description = "Disk-backed transactional key-value database"
+repository = "https://github.com/aaiyer/storedb"
+homepage = "https://github.com/aaiyer/storedb"
+readme = "README.md"
+license = "MIT"
+keywords = ["database", "embedded-database", "key-value", "key-value-store", "sqlite"]
+categories = ["database"]
+
+[dependencies]
+rusqlite = { version = "0.32", features = ["bundled", "functions"] }
+thiserror = "1"
+serde = "1"
+postcard = { version = "1", features = ["use-std"] }
+tempfile = "3.13"
