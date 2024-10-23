@@ -1,9 +1,9 @@
-use std::marker::PhantomData;
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
+use std::marker::PhantomData;
 
 use crate::err::Error;
-use crate::tx::Tx;
+use crate::Tx;
 
 /// Represents the key-value database.
 pub struct Db<K, V> {
@@ -19,10 +19,16 @@ where
   /// Creates a new database instance at the specified path.
   pub fn new(db_path: &str) -> Result<Self, Error> {
     let conn = Connection::open(db_path).map_err(Error::SqliteError)?;
-    conn.execute(
-      "CREATE TABLE IF NOT EXISTS kv_store (key BLOB PRIMARY KEY, value BLOB NOT NULL)",
-      [],
-    )
+    conn
+      .execute_batch(r#"
+        CREATE TABLE IF NOT EXISTS kv_store (key BLOB PRIMARY KEY, value BLOB NOT NULL);
+        PRAGMA application_id = 1111199999;
+        PRAGMA journal_mode = wal;
+        PRAGMA synchronous = normal;
+        PRAGMA temp_store = memory;
+        PRAGMA auto_vacuum = incremental;
+        PRAGMA mmap_size = 2147418112;
+      "#)
       .map_err(Error::SqliteError)?;
     Ok(Db { conn, _phantom: PhantomData })
   }
