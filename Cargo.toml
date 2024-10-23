@@ -1,7 +1,7 @@
 [package]
 name = "storedb"
-version = "1.0.4"
-authors = ["Anand Aiyer"]
+version = "1.0.5"
+authors = ["Anand Aiyer <aaiyer@gmail.com>"]
 edition = "2021"
 description = "Disk-backed transactional key-value database"
 repository = "https://github.com/aaiyer/storedb"
