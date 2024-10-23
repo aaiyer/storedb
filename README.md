@@ -5,7 +5,7 @@ StoreDB is a disk-backed transactional key-value database built using `rusqlite`
 ## Features
 
 - **Transactional Support**: Supports read-only and writable transactions.
-- **Key-Value Storage**: Stores serialized keys and values.
+- **Key-Value Storage**: Stores serialized keys and values that implements serde's serialization traits.
 
 ## Example
 
@@ -82,13 +82,11 @@ fn main() -> Result<(), Error> {
   tx.rollback()?; // Rollback since insertion failed
 
   // Final state of the database
-  {
-    let tx = db.begin(false)?;
-    let entries = tx.scan()?;
-    println!("Final state of the database:");
-    for (id, user) in entries {
-      println!("ID: {}, User: {:?}", id, user);
-    }
+  let tx = db.begin(false)?;
+  let entries = tx.scan()?;
+  println!("Final state of the database:");
+  for (id, user) in entries {
+    println!("ID: {}, User: {:?}", id, user);
   }
 
   Ok(())
