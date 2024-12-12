@@ -1,6 +1,7 @@
 use rusqlite::Connection;
 use serde::{Deserialize, Serialize};
 use std::marker::PhantomData;
+use std::path::Path;
 
 use crate::err::Error;
 use crate::Tx;
@@ -17,7 +18,7 @@ where
   V: Serialize + for<'de> Deserialize<'de>,
 {
   /// Creates a new database instance at the specified path.
-  pub fn new(db_path: &str) -> Result<Self, Error> {
+  pub fn new<P: AsRef<Path>>(db_path: P) -> Result<Self, Error> {
     let conn = Connection::open(db_path).map_err(Error::SqliteError)?;
     conn
       .execute_batch(r#"
