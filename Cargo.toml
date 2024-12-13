@@ -1,6 +1,6 @@
 [package]
 name = "storedb"
-version = "1.1.0"
+version = "2.0.0"
 authors = ["Anand Aiyer <aaiyer@gmail.com>"]
 edition = "2021"
 description = "Disk-backed transactional key-value database"

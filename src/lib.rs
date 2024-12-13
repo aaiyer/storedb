@@ -1,17 +1,13 @@
 //! # StoreDB
 //!
-//! StoreDB is a disk-backed, transactional key-value database built using `rusqlite` in Rust. It uses `postcard` for serialization.
-//! It provides a simple interface for storing and retrieving serialized key-value pairs.
-//!
-//! ## Key Features
-//! - **Transactional Support**
-//! - **Key-Value Storage**
+//! StoreDB is a disk-backed, transactional key-value database built using `rusqlite` in Rust.
+//! It supports multiple named collections stored in a single underlying table.
+//! Uses `postcard` for serialization.
 //!
 //! ## Example Usage
 //! ```rust
-//! use storedb::{Db, Error};
 //! use serde::{Serialize, Deserialize};
-//! use std::fs;
+//! use storedb::{Database, Error};
 //!
 //! #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 //! struct User {
@@ -20,14 +16,14 @@
 //! }
 //!
 //! fn main() -> Result<(), Error> {
-//!   let _ = fs::remove_file("example.db");
-//!   let mut db: Db<u32, User> = Db::new("example.db")?;
-//!   let mut tx = db.begin()?;
+//!   let mut db = Database::new("example.db")?;
+//!   let mut users = db.get_collection::<u32, User>("users")?;
+//!   let mut tx = users.begin()?;
 //!
 //!   tx.put(1u32, User { id: 1, name: "Alice".into() })?;
 //!   tx.commit()?;
 //!
-//!   let tx = db.begin()?;
+//!   let tx = users.begin()?;
 //!   let user = tx.get(1u32)?;
 //!   println!("User: {:?}", user);
 //!
@@ -35,10 +31,12 @@
 //! }
 //! ```
 
-mod db;
+mod database;
 mod err;
-mod tx;
+mod collection;
+mod collection_tx;
 
-pub use db::*;
+pub use database::*;
 pub use err::*;
-pub use tx::*;
+pub use collection::*;
+pub use collection_tx::*;

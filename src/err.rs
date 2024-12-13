@@ -1,6 +1,5 @@
 use thiserror::Error;
 
-/// Errors which can be emitted from a database.
 #[derive(Error, Debug)]
 pub enum Error {
   #[error("SQLite error: {0}")]
@@ -11,4 +10,12 @@ pub enum Error {
 
   #[error("Key being inserted already exists")]
   KeyAlreadyExists,
+
+  #[error("Collection type mismatch: expected key={expected_key}, value={expected_value}, got key={got_key}, value={got_value}")]
+  TypeMismatch {
+    expected_key: String,
+    expected_value: String,
+    got_key: String,
+    got_value: String,
+  },
 }
