@@ -1,6 +1,6 @@
 [package]
 name = "storedb"
-version = "1.0.7"
+version = "1.1.0"
 authors = ["Anand Aiyer <aaiyer@gmail.com>"]
 edition = "2021"
 description = "Disk-backed transactional key-value database"
@@ -13,7 +13,7 @@ categories = ["database"]
 
 [dependencies]
 rusqlite = { version = "0.32", features = ["bundled", "functions"] }
-thiserror = "1"
+thiserror = "2"
 serde = "1"
 postcard = { version = "1", features = ["use-std"] }
-tempfile = "3.13"
+tempfile = "3.14"
